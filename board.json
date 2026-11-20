@@ -1,0 +1,65 @@
+{
+  "board": "Kabocha tasks",
+  "network": { "name": "Kabocha", "para_id": 2113, "relay": "Kusama", "genesis": "0xfeb426ca713f0f46c96465b8f039890370cf6bfd687c9076ea2843f58a6ae8a7", "rpc": "wss://kabocha-rpc.birdbrain.wtf" },
+  "updated": "2026-11-20",
+  "pay": {
+    "status": "not voted",
+    "summary": "Nothing on this board is paid yet. Proposed: each job paid per measured job, monthly in arrears, budgeted in pounds and settled in KAB inside a monthly cap that holders vote. Collators first.",
+    "back_pay": false
+  },
+  "needs": [
+    { "job": "collator", "want": 3, "note": "at least three collators, run by different people on different machines" },
+    { "job": "rpc", "want": 3, "note": "Birdbrain's endpoint plus at least two independent ones" },
+    { "job": "archive", "want": 1 }
+  ],
+  "jobs": [
+    {
+      "id": "node", "rung": 1, "title": "Run a plain node for 14 days", "status": "open",
+      "summary": "Follow the chain on your own machine. No key, no vote, nothing at risk. Two weeks of a node that stays up starts your record.",
+      "needs_key": false, "needs_vote": false,
+      "machine": "4 vCPU, 8 GB RAM, 100 GB SSD, public IPv4, TCP 30333 and 30334 open",
+      "test": "p2p port answers, checked every ten minutes from Birdbrain's box. Synced-to-head check from our peers is being set up.",
+      "pass": "14 days, 95% of checks answered",
+      "pay": null,
+      "page": "jobs/node.md", "issue": null
+    },
+    {
+      "id": "rpc", "rung": 2, "title": "Run a public RPC endpoint", "status": "open", "after": "node",
+      "summary": "Give wallets, explorers and the holders' page somewhere to read Kabocha that is not Birdbrain.",
+      "needs_key": false, "needs_vote": false,
+      "machine": "a plain node plus a domain, TLS and a reverse proxy; safe RPC methods only",
+      "test": "head and genesis hash read from the endpoint every ten minutes; passes within ten blocks of our head",
+      "pass": "share of checks passed over 30 days",
+      "pay": { "hardware_gbp_month": [7, 36], "labour_gbp_month_per_operator": [100, 250], "basis": "assumptions until operators confirm", "joins_budget": "after a quarter of clean collator payouts" },
+      "page": "jobs/rpc.md", "issue": null
+    },
+    {
+      "id": "collator", "rung": 3, "title": "Hold a collator seat", "status": "open", "after": "node",
+      "summary": "Make Kabocha's blocks. The seat is added by a holders' referendum, with your record attached.",
+      "needs_key": true, "needs_vote": true,
+      "machine": "the rung 1 node, on its own machine",
+      "test": "blocks authored by your account each session, read on chain, against the slots it was due",
+      "pass": "share of due slots authored over 30 days",
+      "pay": { "hardware_gbp_month": [7, 36], "labour_gbp_month_per_operator": [100, 250], "basis": "hardware range from real prices, labour an assumption until operators confirm", "joins_budget": "first, once holders vote a budget" },
+      "page": "jobs/collator.md", "issue": null
+    },
+    {
+      "id": "archive", "rung": null, "title": "Run an archive node", "status": "open", "after": "node",
+      "summary": "Keep every past state of the chain so anyone can check history back to 2022.",
+      "needs_key": false, "needs_vote": false,
+      "machine": "a plain node in archive mode, growing disk, a public RPC in front",
+      "test": "an account's balance at a random old block, compared with our own reading, every hour (not running yet)",
+      "pass": "share answered correctly",
+      "pay": { "hardware_gbp_month": null, "labour_gbp_month_per_operator": [100, 250], "basis": "hardware not priced yet", "joins_budget": "after a quarter of clean collator payouts" },
+      "page": "jobs/archive.md", "issue": null
+    }
+  ],
+  "operators": [
+    {
+      "who": "Birdbrain", "job": "collator", "rung": 3, "since": "2026-10-29",
+      "host": "Hetzner, Nuremberg, Germany", "independent": false,
+      "note": "Kabocha's only collator today. Not paid from an operator budget, or its payment is declared.",
+      "check": { "rpc": "wss://kabocha-rpc.birdbrain.wtf" }
+    }
+  ]
+}

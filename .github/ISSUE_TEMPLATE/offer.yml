@@ -1,0 +1,68 @@
+name: Offer to take a job
+description: Offer a plan for one of the jobs on the Kabocha board. A plan, not a price.
+title: "Offer: <job> by <your name or handle>"
+labels: ["offer"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for offering. Everything you write here is public. Never put a secret phrase, a private key or a session key file in an issue.
+  - type: dropdown
+    id: job
+    attributes:
+      label: Which job
+      options:
+        - "Rung 1: run a plain node for 14 days"
+        - "Rung 2: run a public RPC endpoint"
+        - "Rung 3: hold a collator seat"
+        - "Run an archive node"
+    validations:
+      required: true
+  - type: input
+    id: who
+    attributes:
+      label: Who you are
+      description: A name or handle we can use on the board, and where to reach you (Matrix, Telegram or here).
+    validations:
+      required: true
+  - type: textarea
+    id: machine
+    attributes:
+      label: The machine
+      description: CPU, memory, disk, hosting company and country. Your own hardware counts.
+      placeholder: "4 vCPU, 8 GB, 160 GB NVMe, OVH, London"
+    validations:
+      required: true
+  - type: textarea
+    id: keys
+    attributes:
+      label: How you keep keys
+      description: For a collator seat, where the account's wallet lives and how you back up the node's keystore. For other jobs, write "no key".
+    validations:
+      required: true
+  - type: textarea
+    id: outages
+    attributes:
+      label: How you would notice an outage
+      description: Monitoring, alerts, who looks and how quickly.
+    validations:
+      required: true
+  - type: textarea
+    id: record
+    attributes:
+      label: What you have run before
+      description: Polkadot, Kusama or other Substrate nodes, validators, RPCs. Links to anything we can check help most.
+  - type: textarea
+    id: checkable
+    attributes:
+      label: What we can check from outside
+      description: "Rung 1: the node's peer ID and its public address and p2p port (for example 203.0.113.7:30333). RPC or archive: the wss:// address. Collator: your Kabocha account address (starts with 3). Add these once the node is running if you have not started yet."
+  - type: checkboxes
+    id: understood
+    attributes:
+      label: Understood
+      options:
+        - label: Nothing on this board is paid until Kabocha's holders vote an operator budget, and running a job before then does not create a claim to back pay.
+          required: true
+        - label: A collator seat needs a holders' referendum, and my record from the earlier rungs goes with the ask.
+          required: true
